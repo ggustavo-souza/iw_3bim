@@ -1,52 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bs/css/bootstrap.min.css">
+    <title>Adicionar Cadastros</title>
+</head>
+
 <?php
 // Inclua o arquivo de conexão com o banco de dados
 include("db-process.php");
 
-// Função para limpar os dados
-function sanitize_input($data) {
-    return htmlspecialchars(trim($data));
-}
+// função para limpar os dados
 
-// Captura e sanitiza os dados do formulário
-$nome = sanitize_input($_POST["nome"]);
-$data_nascimento = sanitize_input($_POST["data_nascimento"]);
-$email = sanitize_input($_POST["email"]);
-$telefone = sanitize_input($_POST["telefone"]);
-$cep = sanitize_input($_POST["cep"]);
-$rua = sanitize_input($_POST["rua"]);
-$numero = sanitize_input($_POST["numero"]);
-$bairro = sanitize_input($_POST["bairro"]);
-$cidade = sanitize_input($_POST["cidade"]);
-$estado = sanitize_input($_POST["estado"]);
-$complemento = sanitize_input($_POST["complemento"]);
-$assunto = sanitize_input($_POST["assunto"]);
-$mensagem = sanitize_input($_POST["mensagem"]);
-$senha = sanitize_input($_POST["senha"]);
-$cpf = sanitize_input($_POST["cpf"]);
-$rg = sanitize_input($_POST["rg"]);
+// captura e sanitiza os dados do formulário
+$nome = $_GET["nome"];
+$data_nascimento = $_GET["data_nascimento"];
+$email = $_GET["email"];
+$telefone = $_GET["telefone"];
+$cep = $_GET["cep"];
+$rua = $_GET["rua"];
+$numero = $_GET["numero"];
+$bairro = $_GET["bairro"];
+$cidade = $_GET["cidade"];
+$estado = $_GET["estado"];
+$complemento = $_GET["complemento"];
+$assunto = $_GET["assunto"];
+$mensagem = $_GET["mensagem"];
+$senha = $_GET["senha"];
+$cpf = $_GET["cpf"];
+$rg = $_GET["rg"];
 
-// Validação dos dados
+// validar os dados
 $errors = [];
-if (empty($nome)) {
-    $errors[] = "O nome é obrigatório.";
-}
 if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $data_nascimento)) {
-    $errors[] = "Data de nascimento inválida. Use o formato YYYY-MM-DD.";
+    $errors[] = "<h2>Data de nascimento inválida. Use o formato YYYY-MM-DD.</h2>";
 }
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = "E-mail inválido.";
+    $errors[] = "<h2>E-mail inválido.</h2>";
 }
 if (!preg_match("/^\d{11}$/", $telefone)) {
-    $errors[] = "Telefone inválido. Deve conter 11 dígitos.";
+    $errors[] = "<h2>Telefone inválido. Deve conter 11 dígitos.</h2>";
 }
 if (!preg_match("/^\d{11}$/", $cpf)) {
-    $errors[] = "CPF inválido. Deve conter 11 dígitos.";
+    $errors[] = "<h2>CPF inválido. Deve conter 11 dígitos.</h2>";
 }
 if (!preg_match("/^\d+$/", $rg)) {
-    $errors[] = "RG inválido. Deve conter apenas números.";
+    $errors[] = "<h2>RG inválido. Deve conter apenas números.</h2>";
 }
 if (strlen($senha) < 6) {
-    $errors[] = "A senha deve ter pelo menos 6 caracteres.";
+    $errors[] = "<h2>A senha deve ter pelo menos 6 caracteres.</h2>";
 }
 
 if (!empty($errors)) {
@@ -56,30 +59,16 @@ if (!empty($errors)) {
     exit;
 }
 
-// Hash da senha
 $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-// Prepara a declaração SQL
-$sql = "INSERT INTO usuario (nome, data_nascimento, email, telefone, cep, rua, numero, bairro, cidade, estado, complemento, assunto, mensagem, senha, cpf, rg) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-$stmt = $conn->prepare($sql);
+$sqlinsert = "insert into usuario (nome, data_nascimento, email, telefone, cep, rua, numero, bairro, cidade, estado, complemento, assunto, mensagem, senha, cpf, rg) values ('$nome', '$data_nascimento', '$email', '$telefone', '$cep', '$rua', '$numero', '$bairro', '$cidade', '$estado', '$complemento', '$assunto', '$mensagem', '$senha', '$cpf', '$rg')";
 
-if ($stmt === false) {
-    die("Erro na preparação da declaração: " . $conn->error);
-}
-
-// Bind dos parâmetros
-$stmt->bind_param("sssssssssssssss", $nome, $data_nascimento, $email, $telefone, $cep, $rua, $numero, $bairro, $cidade, $estado, $complemento, $assunto, $mensagem, $senha_hash, $cpf, $rg);
-
-// Executa a declaração
-if ($stmt->execute()) {
-    echo "Cadastro realizado com sucesso!";
+$resultado = mysqli_query($conn, $sqlinsert);
+if (!$resultado) {
+    die('Algo deu errado' . mysqli_error($conn));
 } else {
-    echo "Erro ao realizar o cadastro: " . $stmt->error;
+    echo ("<h1 class='fw-bold'>Registro Concluído</h1>");
+    echo ("<a href='db-viewcadastros.php'><button class='btn btn-warning fw-bold mt-3' type='button'>VER REGISTROS</button></a>");
 }
 
-// Fecha a conexão
-$stmt->close();
-$conn->close();
-?>

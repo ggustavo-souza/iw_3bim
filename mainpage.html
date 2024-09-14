@@ -4,18 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="bs/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/mainpage-style.css">
+    <link rel="stylesheet" href="css/style.css">
     <script src="bs/js/bootstrap.bundle.min.js"></script>
     <script src="js/mainpage-script.js"></script>
-    <title>Home</title>
+    <title>IW3</title>
 </head>
 <body>
     <nav class="navbar justify-content-center bg-dark"> <!-- navbar -->
-        <p class="fw-bold text-white fs-3 mt-1">title</p>
+        <p class="fw-bold text-white fs-3 mt-1">Formulário - Cadastro</p>
     </nav>
 
     <div class="container"> <!-- começa organização das labels -->
-        <form id="usuario" action="db-procdata.php" method="post"> <!-- começa form de tudo isso -->
+        <a href="db-viewcadastros.php"><button type="button" class="btn btn-secondary fw-bold mt-5">VER CADASTROS</button></a>
+        <form id="usuario" action="db-procdata.php" method="get"> <!-- começa form de tudo isso -->
             <div class="row mt-5"> <!-- uma row só pra começar organização dos labels -->
                 <div class="col"> <!-- uma col só pra começar organização dos labels -->
 
@@ -36,42 +37,44 @@
 
                     <div class="mb-3">
                         <label for="telefone" class="form-label">Telefone</label>
-                        <input type="text" class="form-control" id="telefone" name="telefone" required>
+                        <input type="tel" onkeyup="mascaraTel(event)" class="form-control" id="telefone" name="telefone" required maxlength="15">
                     </div>
 
                     <div class="mb-3">
                         <label for="cep" class="form-label">CEP</label>
-                        <input type="text" class="form-control" id="cep" name="cep" required>
+                        <input type="text" onkeyup="mascaraCEP(event)" class="form-control" id="cep" name="cep" required maxlength="9">
+                        <!--coleta os dados do site viacep e autocompleta os campos relacionados ao endereço-->
+                        <button type="button" class="btn btn-success mt-1" id="botao1" >Mostrar endereço</button>
                     </div>
 
                     <div class="mb-3">
                         <label for="rua" class="form-label">Rua</label>
-                        <input type="text" class="form-control" id="rua" name="rua" required>
+                        <input type="text" class="form-control" id="rua" name="rua" required >
                     </div>
                     
                     <div class="mb-3">
                         <label for="numero" class="form-label">Número</label>
-                        <input type="text" class="form-control" id="numero" name="numero" required>
+                        <input type="text" class="form-control" id="numero" name="numero" required >
                     </div>
 
                     <div class="mb-3">
                         <label for="bairro" class="form-label">Bairro</label>
-                        <input type="text" class="form-control" id="bairro" name="bairro" required>
+                        <input type="text" class="form-control" id="bairro" name="bairro" required >
                     </div>
 
                     <div class="mb-3">
                         <label for="cidade" class="form-label">Cidade</label>
-                        <input type="text" class="form-control" id="cidade" name="cidade" required>
+                        <input type="text" class="form-control" id="cidade" name="cidade" required >
                     </div>
 
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
-                        <input type="text" class="form-control" id="estado" name="estado" required>
+                        <input type="text" class="form-control" id="estado" name="estado" required >
                     </div>
 
                     <div class="mb-3">
                         <label for="complemento" class="form-label">Complemento</label>
-                        <input type="text" class="form-control" id="complemento" name="complemento">
+                        <input type="text" class="form-control" id="complemento" name="complemento" required >
                     </div>
 
                     <div class="mb-3">
@@ -91,12 +94,12 @@
 
                     <div class="mb-3">
                         <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="cpf" name="cpf" oninput="formatocpf(this)" required>
+                        <input type="text" class="form-control" id="cpf" name="cpf" oninput="formatarcpf(this)" required maxlength="14">
                     </div>
 
                     <div class="mb-3">
                         <label for="rg" class="form-label">RG</label>
-                        <input type="text" class="form-control" id="rg" name="rg" required>
+                        <input type="text" class="form-control" id="rg" name="rg" required maxlength="13">
                     </div>
                 
                 </div>

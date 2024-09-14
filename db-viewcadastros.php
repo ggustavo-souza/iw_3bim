@@ -1,8 +1,7 @@
 <?php
-// Inclua o arquivo de conexão com o banco de dados
 include("db-process.php");
 
-// Prepara a consulta SQL para selecionar todos os registros da tabela
+// prepara a consulta para selecionar todos os registros da tabela
 $sql = "SELECT id, nome, data_nascimento, email, telefone, cep, rua, numero, bairro, cidade, estado, complemento, assunto, mensagem, cpf, rg FROM usuario";
 $result = $conn->query($sql);
 
@@ -17,16 +16,24 @@ if (!$result) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="bs/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
     <title>Visualizar Cadastros</title>
 </head>
 <body>
-    <nav class="navbar justify-content-center bg-dark"> <!-- navbar -->
-        <p class="fw-bold text-white fs-3 mt-1">Visualizar Cadastros</p>
+    <nav class="navbar justify-content-center bg-dark barra"> <!-- navbar -->
+            <p class="fw-bold text-white fs-3 mt-1">Visualizar Cadastros</p>
     </nav>
 
-    <div class="container mt-5">
+    <main class="container-fluid mt-5">
+
+    <div class="container d-flex justify-content-center">
         <h2 class="mb-4">Lista de Cadastros</h2>
-        <table class="table table-striped">
+    </div>
+    <div class="container d-flex justify-content-center">
+    <a href="mainpage.html"><button type="button" class="btn btn-secondary fw-bold">FORMULÁRIO</button></a>
+    </div>
+        <div class="row table-responsive">
+        <table class="table table-striped table-bordered table-sm mt-5">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -49,11 +56,11 @@ if (!$result) {
             </thead>
             <tbody>
                 <?php
-                // Verifica se há resultados
+                // verifica se há resultados
                 if ($result->num_rows > 0) {
-                    // Exibe os dados de cada linha
+                    // exibe os dados de cada linha
                     while ($row = $result->fetch_assoc()) {
-                        echo "<tr>";
+                        echo "<tr class='mb-5'>";
                         echo "<td>" . htmlspecialchars($row['id']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['nome']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['data_nascimento']) . "</td>";
@@ -73,15 +80,16 @@ if (!$result) {
                         echo "</tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='16'>Nenhum cadastro encontrado</td></tr>";
+                    echo "<h2>Nenhum cadastro foi encontrado</h2>";
                 }
 
-                // Fecha a conexão
+                // fechar a conexao
                 $result->free();
                 $conn->close();
                 ?>
             </tbody>
         </table>
-    </div>
+        </div>
+    </main>
 </body>
 </html>
