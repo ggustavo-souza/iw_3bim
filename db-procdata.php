@@ -18,7 +18,9 @@ $nome = $_GET["nome"];
 $data_nascimento = $_GET["data_nascimento"];
 $email = $_GET["email"];
 $telefone = $_GET["telefone"];
+$telefoneformatado = preg_replace('/[^0-9]/', '', $telefone);
 $cep = $_GET["cep"];
+$cepformatado = str_replace('-', '', $cep);
 $rua = $_GET["rua"];
 $numero = $_GET["numero"];
 $bairro = $_GET["bairro"];
@@ -29,7 +31,9 @@ $assunto = $_GET["assunto"];
 $mensagem = $_GET["mensagem"];
 $senha = $_GET["senha"];
 $cpf = $_GET["cpf"];
+$cpfformatado = preg_replace('/[^0-9]/', '', $cpf);
 $rg = $_GET["rg"];
+$rgformatado = preg_replace('/[^0-9]/', '', $rg);
 
 // validar os dados
 $errors = [];
@@ -39,13 +43,13 @@ if (!preg_match("/^\d{4}-\d{2}-\d{2}$/", $data_nascimento)) {
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors[] = "<h2>E-mail inválido.</h2>";
 }
-if (!preg_match("/^\d{11}$/", $telefone)) {
+if (!preg_match("/^\d{11}$/", $telefoneformatado)) {
     $errors[] = "<h2>Telefone inválido. Deve conter 11 dígitos.</h2>";
 }
-if (!preg_match("/^\d{11}$/", $cpf)) {
+if (!preg_match("/^\d{11}$/", $cpfformatado)) {
     $errors[] = "<h2>CPF inválido. Deve conter 11 dígitos.</h2>";
 }
-if (!preg_match("/^\d+$/", $rg)) {
+if (!preg_match("/^\d+$/", $rgformatado)) {
     $errors[] = "<h2>RG inválido. Deve conter apenas números.</h2>";
 }
 if (strlen($senha) < 6) {
